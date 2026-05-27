@@ -31,7 +31,9 @@ jobs:
       - name: Run tests
         run: |
           mkdir -p reports
-          npx vitest run --reporter=default --reporter=junit --outputFile.junit=./reports/vitest-junit.xml
+          npx vitest run --reporter=default --reporter=junit --outputFile=./reports/vitest-junit.xml
+          echo "Checking reports directory:"
+          ls -R reports/
 
       - name: Upload test report artifact
         if: always()
@@ -39,6 +41,7 @@ jobs:
         with:
           name: test-report
           path: reports/
+          if-no-files-found: warn
 
       - name: Test Summary
         uses: test-summary/action@v2
