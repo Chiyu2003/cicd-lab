@@ -29,17 +29,15 @@ jobs:
         run: npm run typecheck
 
       - name: Run tests
-        continue-on-error: true
         run: |
           mkdir -p reports
-          npx vitest run --reporter=default --reporter=junit --outputFile=reports/vitest-junit.xml
+          npx vitest run --reporter=default --reporter=junit --outputFile.junit=reports/vitest-junit.xml
 
-      - name: Debug - List Files
-        run: |
-          echo "Current directory content:"
-          ls -R
-          echo "Reports directory content:"
-          ls -R reports/ || echo "reports directory not found"
+      - name: Test Summary
+        uses: test-summary/action@v2
+        if: always()
+        with:
+          paths: "**/vitest-junit.xml"
 
       - name: Upload test report artifact
         if: always()
@@ -48,9 +46,3 @@ jobs:
           name: test-report
           path: reports/
           if-no-files-found: warn
-
-      - name: Test Summary
-        uses: test-summary/action@v2
-        if: always()
-        with:
-          paths: "reports/vitest-junit.xml"
