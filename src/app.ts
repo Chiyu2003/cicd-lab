@@ -14,10 +14,8 @@ export function buildApp(options: FastifyServerOptions = {}) {
   });
 
   app.get('/health', async () => {
-    const errorCount: number = 'this is a string'; // TypeScript Error
     return {
-      status: 'ok',
-      errors: errorCount
+      status: 'ok'
     };
   });
 
